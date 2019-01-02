@@ -122,7 +122,7 @@ EMD L1: 0.05074453307535349
 
 I tested three approaches: 1) histogram with 10 bins and std dev understood as relative (i.e. I multiplied it by the respective mean score), 2) Histogram with 1000 bins and standard deviation used as is, 3) Simple regression on means without using those strange MOS std dev values. First two models were worse than regression network in terms of correlation, so I left only regression model there. Why correlation is most important, you can read in **Usage**. Also, histogram models showed very high shift for me (good correlation, but big difference in mean and std dev), which could be partially eliminated by adding additional relu layer after softmax (regression, no negative bins). Yes, that was an ugly workaround, but I don't understand, why those models lacked linearity so much.
 
-This model was trained on random 224x224 patches, because dataset is too small. Training was also quite manual, so you can refer to train script only to start with, then tweaking learning rate manually, watching performance. First 3 images with all their distortions were used as Test set, while remaining images were used for training. Also I added 1 more dense layer (features) before output.
+This model was trained on random 224x224 patches, because dataset is too small. Values of MOS were shiftet to 1-10 scale (i.e I did +1 to everything in mos.txt). Training was also quite manual, so you can refer to train script only to start with, then tweaking learning rate manually, watching performance. First 3 images with all their distortions were used as Test set, while remaining images were used for training. Also I added 1 more dense layer (features) before output.
 
 Results:
 
