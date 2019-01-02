@@ -1,0 +1,47 @@
+Vanilla:
+
+
+Got labels: 25548
+[[   0    0    0    0    0    0    0    0    0    0]
+ [   0    4    2    0    0    0    0    0    0    0]
+ [   1   10   79   53    3    0    0    0    0    0]
+ [   0   24  520 2668 1190   63    0    0    0    0]
+ [   0    8  158 3857 9940 2457  100    0    0    0]
+ [   0    0    6  152 1918 2103  228    2    0    0]
+ [   0    0    0    0    0    1    1    0    0    0]
+ [   0    0    0    0    0    0    0    0    0    0]
+ [   0    0    0    0    0    0    0    0    0    0]
+ [   0    0    0    0    0    0    0    0    0    0]]
+accuracy:0.9135090313582956
+Binary accuracy:0.7871849068420229
+standard deviation of score differences:0.35308226304247403
+LCC: (0.6559346351019297, 0.0)
+SRCC: SpearmanrResult(correlation=0.6399734447510996, pvalue=0.0)
+LCC (std dev): (0.30454632211568017, 0.0)
+SRCC (std dev): SpearmanrResult(correlation=0.2880825105550821, pvalue=0.0)
+EMD L1: 0.04845840864470296
+ 
+
+Patches (center, if possible to take):
+
+Got labels: 25428
+[[    0     0     0     0     0     0     0     0     0     0]
+ [    0     0     0     0     0     0     0     0     0     0]
+ [    0     6    52    49     2     0     0     0     0     0]
+ [    0    27   455  2594  1500   114     2     0     0     0]
+ [    1    11   210  3989 10702  3381   181     0     0     0]
+ [    0     0     2    57   810  1114   141     2     0     0]
+ [    0     0     0     0     6    15     5     0     0     0]
+ [    0     0     0     0     0     0     0     0     0     0]
+ [    0     0     0     0     0     0     0     0     0     0]
+ [    0     0     0     0     0     0     0     0     0     0]]
+accuracy:0.9112602801265431
+Binary accuracy:0.7684442347019034
+standard deviation of score differences:0.3711319098714664
+LCC: (0.5882660857382291, 0.0)
+SRCC: SpearmanrResult(correlation=0.5785882975473592, pvalue=0.0)
+LCC (std dev): (0.21782951624048325, 9.182308742020182e-271)
+SRCC (std dev): SpearmanrResult(correlation=0.21209535802882526, pvalue=1.7588084307929522e-256)
+EMD L1: 0.05074453307535349
+
+
