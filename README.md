@@ -10,8 +10,6 @@ Using those models on practice yields some problems, which are discussed in **Us
 I did not put much effort into organizing code, but you can get well with taking pretrained models and using them in your project.
 
 
-This research was supported by [![Let's Enhance](https://letsenhance.io/static/img/logo.ce92ea0.png)](https://letsenhance.io)
-
 Requirements: Python 3.x, Tensorflow >= 1.10.0, Keras >= 2.2.2
 
 
@@ -23,12 +21,12 @@ The models were trained on [AVA: A Large-Scale Database for Aesthetic Visual Ana
 Both models predict 10-bin normalized histogram of human opinion scores (1-10).
 
 
-Each model has `infer` script, where there is a function to obtain inference from image. The script also contains commented out part, where predictions are generated one-by-one from test set and saved to `wtf-***.mat` (Please excuse me for such name, but it's too late to change it). The reason for writing such inefficient code is that I don't trust Keras generator for this task, as it often returns different results. You can repeat this computation yourself to ensure the results are correct. Also, there is a script for plotting results, which uses `.mat` file to output metric and plot histograms, similar to the ones in the paper.
+Each model has `infer` script, where there is a function to obtain inference from image. The script also contains commented out part, where predictions are generated one-by-one from test set and saved to `wtf-***.mat` (Please excuse me for such naming, but it's too late to change it. I was too surprised by some of the results, so I called data like these). The reason for writing such inefficient code is that I don't trust Keras generator for this task, as it often returns different results. You can repeat this computation yourself to ensure the results are correct. Also, there is a script for plotting results, which uses `.mat` file to output metrics and plot histograms, similar to the ones in the paper.
 
 
 ### Vanilla
 
-The first model (**vanilla**) was trained in the same way original article suggests: 1) Input images were resized to 256x256, then randomly cropped to 224x224, random left-right flips were used as additional augmentation. Unlike article, this model architecture is MobileNetV2, Adam optimizer was used, and regularization terms were added to loss: MSE of the first and MSE of the second moments for predicted histograms.
+The first model (**vanilla**) was trained in the same way original article suggests: 1) Input images were resized to 256x256, then randomly cropped to 224x224, random left-right flips were used as additional augmentation. Unlike article, this model architecture is MobileNetV2, Adam optimizer was used, and regularization terms were added to loss: MSE of the first and MSE of the second moment for predicted histograms.
 
 The model was trained in the following highly manual way: batch size=16, 1 epoch pretrain, lr=1e-3 (base model frozen), 4 epochs lr=10-4, 12 epochs lr=5x10-6, 1 epoch 5x10-7. The key is that you need to watch model stopping to improve and overfitting, and switching to lower learning rate by breaking the script (Ctrl-C), and starting training with new settings.
 
@@ -120,11 +118,11 @@ EMD L1: 0.05074453307535349
 
 ## TID2013 model
 
-[TID2013](http://www.ponomarenko.info/tid2013.htm) is a dataset for evaluating visual quality of the images. The TID2013 contains 25 reference images and 3000 distorted images (25 reference images x 24 types of distortions x 5 levels of distortions). For each image there are values of mean score (float in range (0-9)] and standard deviation provided. However, the latter data is tricky. It is too small to be standard deviation for the histogram of scores with 10 bins 0-9, similar to AVA dataset: typical values there are `~0.15` which makes impossible to fit it using normal distribution (almost always nearly all the distribution mass will lie inside one bin). I've read original paper [Image database TID2013: Peculiarities, results and perspectives](http://www.ponomarenko.info/papers/tid2013.pdf) for any mentions that is is relative or normalized standard deviation (i.e. divided by mean), but the article states that it is RMSE of MOS (mean opinion scores). Google NIMA paper just tells that they approximated histograms with some maximum entropy distribution, without any clarification. Maximum entropy distribution for R would be normal, if we have only mean and variance. For the range 1-10 we can also take normal, as tails would be negligible. Idealo in their realization approximate histograms with some maximum entropy model, which takes only MOS (mean) as input though, making no use of these std dev values.
+[TID2013](http://www.ponomarenko.info/tid2013.htm) is a dataset for evaluating visual quality of the images. TID2013 contains 25 reference images and 3000 distorted images (25 reference images x 24 types of distortions x 5 levels of distortions). For each image there are values of mean score (float in range (0-9)] and standard deviation - however, the latter data is tricky. It is too small to be standard deviation for the histogram of scores with 10 bins 0-9, similar to AVA dataset: typical values there are `~0.15` which makes impossible to fit it using normal distribution (almost always nearly all the distribution mass will lie inside one bin). I've read original paper [Image database TID2013: Peculiarities, results and perspectives](http://www.ponomarenko.info/papers/tid2013.pdf) for any mentions that it is relative or normalized standard deviation (i.e. divided by mean), but the article states that it is RMSE of MOS (mean opinion scores). Google NIMA paper just tells that they approximated histograms with some maximum entropy distribution, without any clarification. Maximum entropy distribution on reals would be normal, if we have only mean and variance. For the range 1-10 we can also take normal, as tails would be negligible. Idealo in their realization approximate histograms with some maximum entropy model, which takes only MOS (mean) as input, making no use of these std dev values.
 
-I tested three approaches: 1) histogram with 10 bins and std dev understood as relative (i.e. I multiplied it by the respective mean score), 2) Histogram with 1000 bins and standard deviation used as is 3) Simple regression on means without using those strange MOS std dev values. first two models were worse that simple regression in terms of correlation, so I left only regression model there. Why correlation is most important, you can read in **Usage**. Also, histogram models showed very high shift for me (good correlation, but big difference in mean and std dev), which could be partially eliminated by adding additional relu layer after softmax (regression, no negative bins). Yes, that was an ugly workaround, but I don't understand, why those models lacked linearity so much.
+I tested three approaches: 1) histogram with 10 bins and std dev understood as relative (i.e. I multiplied it by the respective mean score), 2) Histogram with 1000 bins and standard deviation used as is, 3) Simple regression on means without using those strange MOS std dev values. First two models were worse than regression network in terms of correlation, so I left only regression model there. Why correlation is most important, you can read in **Usage**. Also, histogram models showed very high shift for me (good correlation, but big difference in mean and std dev), which could be partially eliminated by adding additional relu layer after softmax (regression, no negative bins). Yes, that was an ugly workaround, but I don't understand, why those models lacked linearity so much.
 
-This model was trained on random 224x224 patches, because dataset is too small. Training was also quite manual, so you can refer to train script only to start with, then tweaking learning rate manually, watching performance. First 3 images with all their distortions were used as Test set, while remaining images were used for training. Also I added 1 more dense layer before output.
+This model was trained on random 224x224 patches, because dataset is too small. Training was also quite manual, so you can refer to train script only to start with, then tweaking learning rate manually, watching performance. First 3 images with all their distortions were used as Test set, while remaining images were used for training. Also I added 1 more dense layer (features) before output.
 
 Results:
 
@@ -161,10 +159,10 @@ Google result:
 ## Comparison with Idealo
 
 
-The results I received were quite poor on my opinion, so I compared them with available implementation from Idealo ([Link to the latest commit on that time](https://github.com/idealo/image-quality-assessment/commit/97576e330b014b174c3624e509215e634eba407f)). You can read out discussion [here](https://github.com/idealo/image-quality-assessment/issues/18).
+The results I received were quite poor on my opinion, so I compared them with available implementation from Idealo ([Link to the latest commit on that time](https://github.com/idealo/image-quality-assessment/commit/97576e330b014b174c3624e509215e634eba407f)). You can read our discussion [here](https://github.com/idealo/image-quality-assessment/issues/18).
 
 
-To recompute comparison of results, you need to clone the repository, and put the scripts from `idealo_comparison` folder into it, uncommenting the part in `infer.py`. Here are the results for Idealo AVA model:
+To recompute comparison of results, you need to clone the Idealo repository, and put the scripts from `idealo_comparison` folder into it, uncommenting the part in `infer.py`. Here are the results for Idealo AVA model:
 
 
 ```
@@ -202,13 +200,13 @@ Those look quite similar to mine and paper (correlation `~0.6`).
 
 When I attempted to use AVA models to evaluate visual quality of images, I've got quite garbage results (which is inevitable with correlation 0.6). This is clearly seen from confusion matrix. To understand what is wrong, I contacted authors and searched for another pretrained models. For the authors' response, the most relevant metric for this task is correlation. Which means, on my opinion, that those are exactly the results they've got. Predictions of this model cannot be used to evaluate images, but it can be a component of some ensemble. Moreover, there is another interesting thing you can do: compute cosine similarity for the outputs of global average pooling layer ("features"), and this metric might be more descriptive, as I will show below on the example of TID2013 model.
 
-The reason why correlation is so low is that the dataset itself might be bad: even stronger models did not achieve better results. Also, correlation obtained for the model, trained on patches, is very close, which means that the models aptures rather image quality features than content. It can be supported by the fact that model predicts variance of scores very poorly, which is covered in the original paper.
+The reason why correlation is so low is that the dataset itself might be bad: even stronger models did not achieve better results. Also, correlation obtained for the model, trained on patches, is very close, which means that the model captures rather image quality features than content. It can be supported by the fact that model predicts variance of scores very poorly, which is covered in the original paper.
 
 I did oversampling of the data with low and high mean scores, but got no improvement. These models were trained without oversampling.
 
 As it was already mentioned, you can use `infer` scripts to compute output from AVA models for some images. To train those models, you can start with the train scripts I provided, but just as the beginning: I was starting them as `python3 -i ava_vanilla.py` and then manually stopped training with Ctrl-C and re-entered the lines with new learning rate, `model.compile` and `model.fit_generator`. The approximate scheme is: batch size=16, 1 epoch pretrain, lr=1e-3 (with base model frozen), then unfreeze all layers and train for 4 epochs lr=10-4, 12 epochs lr=5x10-6, 1 epoch 5x10-7. But you need to watch yourself.
 
-As for TID2013 model, it also showed some surprises. Having very high correlation, it was supposed to work very good. However, doing inference on some real-world images with different level of jpeg compression (quality 80, 70, 60, 40) revealed, that is sometimes outputs low scores for raw image, and higher scores for jpeg compression. You can check this behavior for both mine and idealo models using script `test_distortions.py`.
+As for TID2013 model, you can pretrain it for 3-4 epochs with high learning rate 10-3, or 10-4, and then train for 200-300 epochs with lr=10-5 or lower. It also showed some surprises. Having very high correlation, it was supposed to work very good - however, doing inference on some real-world images with different level of jpeg compression (quality 80, 70, 60, 40) revealed, that it sometimes outputs low scores for raw image, and higher scores for jpeg compression. You can check this behavior for both mine and idealo models using script `test_distortions.py`.
 
 For the central patch from `res.jpg` it gives the following scores:
 
@@ -233,7 +231,7 @@ file:res40.jpg, score:[[4.967556]]
 ```
 
 
-I've checked the scores for the images from the tid2013 dataset, they seem ok (images taken are `iXX_10_Y.bmp`, where 10 corresponds to jpeg compression distortion, and Y is level of it):
+I've checked the scores for the images from the tid2013 dataset, they seem ok (images taken are `iXX_10_Y.bmp`, where 10 corresponds to jpeg compression distortion, and Y is the level of it):
 
 
 ```
@@ -264,7 +262,7 @@ Image i24, labels:[5.886 5.829 4.657 3.278 1.853], predictions:[5.536 5.484 4.98
 Image i25, labels:[5.857 5.571 4.257 2.147 1.472], predictions:[5.392 5.232 3.987 2.098 1.58 ]
 ```
 
-This means that TID2013 dataset is also not very useful, as models trained on it, seem inadequate on unseen images. However, I found that cosine distance of the features from feature layer behaves more correctly for my model, see script `test_distortions_cosine.py`:
+This means that TID2013 dataset is also not very useful, as models, trained on it, seem inadequate on unseen images. However, I found that cosine distance of the features from feature layer behaves more correctly for my model, see script `test_distortions_cosine.py`:
 
 ```
 file:res.jpg, score:[[3.649583]], cos: 0.0
@@ -296,7 +294,10 @@ You can try couple of losses I have in train script: chi-square loss, pearson co
 
 ## Acknowledgments
 
+This research was supported by:
 [Let's Enhance](https://letsenhance.io)
+
+We had discussions and I used Idealo models for comparison:
 [Idealo](https://github.com/idealo/image-quality-assessment)
 
 
