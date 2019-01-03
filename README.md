@@ -292,6 +292,22 @@ Perhaps AVA models can be used in a similar way.
 You can try couple of losses I have in train script: chi-square loss, pearson correlation losses.
 
 
+### AVA2Text dataset: Im2text and word2vec
+
+To approach the problem of predicting variance, I tried to use such knowledge domain, as word2vec. For this task, I have computed text descriptions for all AVA images using available [Show and tell im2txt model](https://github.com/tensorflow/models/tree/master/research/im2txt) and [5M checkpoint](https://github.com/Gharibim/Tensorflow_im2txt_5M_Step). The descriptions were generated using node with 32 CPUs and a script `save_inference_mlt.py`. You can use this script along with `inference_wrapper.py` from `im2txt/im2txt/` folder of the model. The resulting dataset has the following structure: 
+
+The dataset is stored in `ava_im2txt.json`. The first is image id in AVA dataset (so the image would be `str(img_id)+'.jpg'`), then there are 3 sentences (except only two examples which have two sentences associated) of description with some confidence values from im2txt model:
+
+```
+[440644, [[['a', 'stone', 'wall', 'with', 'a', 'stone', 'wall', 'and', 'a', 'stone', 'wall', '.'], 1.0245801652685553e-07], [['a', 'stone', 'wall', 'with', 'a', 'stone', 'wall', 'and', 'a', 'stone', 'wall', 'with', 'a', 'black', 'and', 'white', 'clock', '.'], 2.4813786974028372e-11]], 
+
+[465004, [[['a', 'cell', 'phone', 'and', 'a', 'charger', 'on', 'a', 'table', '.'], 5.819441252634226e-05], [['a', 'cell', 'phone', 'and', 'a', 'charger', 'on', 'a', 'table'], 1.6504172213592575e-05]]]
+```
+
+The example usage would be attaching LSTM model in ensemble with MobileNetV2 model and using pretrained Google Word2Vec embeddings as a source of additional domain knowledge. Example model for such approach is `ava_text_example.py`. The script is very primitive and uses all the GoogleNews word2vec model as embedding matrix, which is memory consuming. You can limit it to the vocabulary used by im2txt (`word_counts.txt` from COCO dataset, included into repository).
+
+However, I still did not achieve better performance, perhaps LSTM needs long pretraining or some another architecture is needed. Good luck with that!
+
 ## Acknowledgments
 
 This research was supported by:
@@ -299,6 +315,11 @@ This research was supported by:
 
 We had discussions and I used Idealo models for comparison:
 [Idealo](https://github.com/idealo/image-quality-assessment)
+
+Used this model and checkpoint for text predictions
+[im2txt](https://github.com/tensorflow/models/tree/master/research/im2txt)
+[5M checkpoint](https://github.com/Gharibim/Tensorflow_im2txt_5M_Step)
+
 
 
 

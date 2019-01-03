@@ -1,0 +1,20 @@
+pretrain lr-10-3, bs=32
+Epoch 1/1
+14374/14374 [==============================] - 3960s 275ms/step - loss: 6.7779 - earth_mover_loss: 0.0931 - acc: 0.8894 - bin_acc: 0.7012 - first_moment: 0.7124 - second_moment: 0.6974 - pearson_corr_scores: 0.2679 - val_loss: 6.7825 - val_earth_mover_loss: 0.0935 - val_acc: 0.8738 - val_bin_acc: 0.7053 - val_first_moment: 0.7637 - val_second_moment: 0.5818 - val_pearson_corr_scores: 0.3216
+
+train, lr=10-5
+Epoch 1/25
+14374/14374 [==============================] - 5252s 365ms/step - loss: 5.7772 - earth_mover_loss: 0.0786 - acc: 0.9031 - bin_acc: 0.7448 - first_moment: 0.6278 - second_moment: 0.5913 - pearson_corr_scores: 0.4944 - val_loss: 5.3807 - val_earth_mover_loss: 0.0729 - val_acc: 0.9105 - val_bin_acc: 0.7671 - val_first_moment: 0.5830 - val_second_moment: 0.5712 - val_pearson_corr_scores: 0.5822
+Epoch 2/25
+14374/14374 [==============================] - 5241s 365ms/step - loss: 5.5309 - earth_mover_loss: 0.0750 - acc: 0.9079 - bin_acc: 0.7612 - first_moment: 0.5990 - second_moment: 0.5832 - pearson_corr_scores: 0.5636 - val_loss: 5.2642 - val_earth_mover_loss: 0.0711 - val_acc: 0.9133 - val_bin_acc: 0.7751 - val_first_moment: 0.5688 - val_second_moment: 0.5718 - val_pearson_corr_scores: 0.6070
+Epoch 3/25
+14374/14374 [==============================] - 5233s 364ms/step - loss: 5.4119 - earth_mover_loss: 0.0733 - acc: 0.9103 - bin_acc: 0.7674 - first_moment: 0.5847 - second_moment: 0.5798 - pearson_corr_scores: 0.5919 - val_loss: 5.2519 - val_earth_mover_loss: 0.0709 - val_acc: 0.9147 - val_bin_acc: 0.7725 - val_first_moment: 0.5679 - val_second_moment: 0.5686 - val_pearson_corr_scores: 0.6173
+Epoch 4/25
+14374/14374 [==============================] - 5246s 365ms/step - loss: 5.3296 - earth_mover_loss: 0.0721 - acc: 0.9119 - bin_acc: 0.7733 - first_moment: 0.5748 - second_moment: 0.5768 - pearson_corr_scores: 0.6106 - val_loss: 5.1879 - val_earth_mover_loss: 0.0700 - val_acc: 0.9156 - val_bin_acc: 0.7782 - val_first_moment: 0.5597 - val_second_moment: 0.5667 - val_pearson_corr_scores: 0.6300
+Epoch 5/25
+14374/14374 [==============================] - 5234s 364ms/step - loss: 5.2668 - earth_mover_loss: 0.0712 - acc: 0.9132 - bin_acc: 0.7780 - first_moment: 0.5674 - second_moment: 0.5738 - pearson_corr_scores: 0.6243 - val_loss: 5.1962 - val_earth_mover_loss: 0.0701 - val_acc: 0.9160 - val_bin_acc: 0.7784 - val_first_moment: 0.5613 - val_second_moment: 0.5676 - val_pearson_corr_scores: 0.6307
+Epoch 6/25
+14374/14374 [==============================] - 5238s 364ms/step - loss: 5.2229 - earth_mover_loss: 0.0705 - acc: 0.9141 - bin_acc: 0.7790 - first_moment: 0.5619 - second_moment: 0.5733 - pearson_corr_scores: 0.6343 - val_loss: 5.1188 - val_earth_mover_loss: 0.0691 - val_acc: 0.9166 - val_bin_acc: 0.7848 - val_first_moment: 0.5503 - val_second_moment: 0.5657 - val_pearson_corr_scores: 0.6373
+Epoch 7/25
+14374/14374 [==============================] - 5238s 364ms/step - loss: 5.1743 - earth_mover_loss: 0.0698 - acc: 0.9151 - bin_acc: 0.7824 - first_moment: 0.5563 - second_moment: 0.5715 - pearson_corr_scores: 0.6437 - val_loss: 5.0893 - val_earth_mover_loss: 0.0687 - val_acc: 0.9161 - val_bin_acc: 0.7865 - val_first_moment: 0.5460 - val_second_moment: 0.5647 - val_pearson_corr_scores: 0.6411
+ 

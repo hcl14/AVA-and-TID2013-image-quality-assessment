@@ -1,0 +1,30 @@
+AVA images generated text cations.
+
+Model used: 
+https://github.com/tensorflow/models/tree/master/research/im2txt
+
+Checkpoint used: 
+https://github.com/Gharibim/Tensorflow_im2txt_5M_Step
+
+
+Number of elemets:
+255494  (all the correct images in AVA dataset)
+
+Structure:
+
+`[image_id, [description1, description2, description3]]`
+
+Where description = [split_sentence, score]
+
+Two images have just two descriptions:
+
+```
+[440644, [[['a', 'stone', 'wall', 'with', 'a', 'stone', 'wall', 'and', 'a', 'stone', 'wall', '.'], 1.0245801652685553e-07], [['a', 'stone', 'wall', 'with', 'a', 'stone', 'wall', 'and', 'a', 'stone', 'wall', 'with', 'a', 'black', 'and', 'white', 'clock', '.'], 2.4813786974028372e-11]], 
+
+[465004, [[['a', 'cell', 'phone', 'and', 'a', 'charger', 'on', 'a', 'table', '.'], 5.819441252634226e-05], [['a', 'cell', 'phone', 'and', 'a', 'charger', 'on', 'a', 'table'], 1.6504172213592575e-05]]]
+```
+
+You can probably augment them by copying one of the descriptions.
+
+
+Purpose: use those descriptions and word2vec space to input this data additionaly to AVA model.
