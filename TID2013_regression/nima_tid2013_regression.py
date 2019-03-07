@@ -316,7 +316,11 @@ class DataSequence(Sequence):
 # The default input size for this model is 224x224x3
 
 # include_Top = False cuts too much layers on this version of keras. I will select previous layer manually.
-base_model = keras.applications.mobilenetv2.MobileNetV2((224,224,3), pooling='avg', weights='imagenet', include_top=True)
+try:
+    base_model = keras.applications.mobilenetv2.MobileNetV2((224,224,3), pooling='avg', weights='imagenet', include_top=True)
+except:
+    base_model = keras.applications.mobilenet_v2.MobileNetV2((224,224,3), pooling='avg', weights='imagenet', include_top=True)
+
 
 
 # test inference ----------------------
